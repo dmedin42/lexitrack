@@ -22,12 +22,6 @@ function LazySection({ children, fallback }: { children: React.ReactNode; fallba
   return <div ref={ref}>{visible ? children : (fallback ?? <div className="min-h-[300px]" />)}</div>;
 }
 
-declare global {
-  interface Window {
-    fbq?: (...args: unknown[]) => void;
-  }
-}
-
 const features = [
   { emoji: "📸", title: "Zero Prep", description: "Snap-to-Read setup removes the manual stopwatch struggle." },
   { emoji: "⏱️", title: "Peace in 60s", description: "Verify you're doing a great job and identify phonics gaps instantly." },
@@ -46,9 +40,6 @@ const fadeUp = {
 const CHECKOUT_URL = "https://buy.stripe.com/aFa5kFdvM3cqgZieW6bwk00";
 
 function handleCheckout() {
-  if (typeof window !== "undefined" && window.fbq) {
-    window.fbq("track", "InitiateCheckout", { value: 0.99, currency: "USD" });
-  }
   window.open(CHECKOUT_URL, "_blank", "noopener");
 }
 

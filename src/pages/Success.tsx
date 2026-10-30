@@ -1,23 +1,10 @@
-import { useEffect } from "react";
 import { Link } from "react-router-dom";
 import { BookOpen, CheckCircle, Sparkles } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 
-declare global {
-  interface Window {
-    fbq?: (...args: unknown[]) => void;
-  }
-}
-
 export default function Success() {
-  useEffect(() => {
-    if (typeof window !== "undefined" && window.fbq) {
-      window.fbq("track", "Purchase", { value: 1.0, currency: "USD" });
-    }
-  }, []);
-
   return (
     <div className="min-h-screen bg-background flex flex-col">
       {/* Nav */}
