@@ -1,0 +1,186 @@
+/* Self-hosted Google Fonts — variable weight, latin subset */
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 400 600;
+  font-display: swap;
+  src: url('/fonts/inter-latin.woff2') format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+@font-face {
+  font-family: 'Nunito';
+  font-style: normal;
+  font-weight: 400 800;
+  font-display: swap;
+  src: url('/fonts/nunito-latin.woff2') format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 180 20% 98%;
+    --foreground: 200 25% 15%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 200 25% 15%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 200 25% 15%;
+
+    --primary: 173 58% 39%;
+    --primary-foreground: 0 0% 100%;
+
+    --secondary: 180 15% 95%;
+    --secondary-foreground: 200 25% 15%;
+
+    --muted: 180 10% 93%;
+    --muted-foreground: 200 10% 40%;
+
+    --accent: 38 92% 50%;
+    --accent-foreground: 0 0% 100%;
+
+    --destructive: 0 72% 51%;
+    --destructive-foreground: 0 0% 100%;
+
+    --border: 180 15% 90%;
+    --input: 180 15% 90%;
+    --ring: 173 58% 39%;
+
+    --radius: 0.75rem;
+
+    /* Word mapping colors */
+    --word-correct: 152 60% 42%;
+    --word-substitution: 0 72% 55%;
+    --word-mispronunciation: 43 96% 50%;
+    --word-omission: 220 10% 65%;
+    --word-insertion: 210 80% 55%;
+
+    /* Chart colors */
+    --chart-fluency: 173 58% 39%;
+    --chart-accuracy: 38 92% 50%;
+    --chart-benchmark: 0 72% 55%;
+    --chart-comprehension: 210 80% 55%;
+
+    /* Shadows */
+    --shadow-sm: 0 1px 3px hsl(200 25% 15% / 0.06);
+    --shadow-md: 0 4px 12px hsl(200 25% 15% / 0.08);
+    --shadow-lg: 0 8px 30px hsl(200 25% 15% / 0.1);
+
+    --sidebar-background: 0 0% 98%;
+    --sidebar-foreground: 240 5.3% 26.1%;
+    --sidebar-primary: 173 58% 39%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 180 15% 95%;
+    --sidebar-accent-foreground: 200 25% 15%;
+    --sidebar-border: 180 15% 90%;
+    --sidebar-ring: 173 58% 39%;
+  }
+
+  .dark {
+    --background: 200 25% 10%;
+    --foreground: 180 10% 93%;
+    --card: 200 20% 14%;
+    --card-foreground: 180 10% 93%;
+    --popover: 200 20% 14%;
+    --popover-foreground: 180 10% 93%;
+    --primary: 173 58% 45%;
+    --primary-foreground: 0 0% 100%;
+    --secondary: 200 15% 18%;
+    --secondary-foreground: 180 10% 93%;
+    --muted: 200 15% 20%;
+    --muted-foreground: 200 10% 55%;
+    --accent: 38 92% 55%;
+    --accent-foreground: 0 0% 100%;
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 0 0% 100%;
+    --border: 200 15% 22%;
+    --input: 200 15% 22%;
+    --ring: 173 58% 45%;
+    --sidebar-background: 200 25% 10%;
+    --sidebar-foreground: 180 10% 93%;
+    --sidebar-primary: 173 58% 45%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 200 15% 18%;
+    --sidebar-accent-foreground: 180 10% 93%;
+    --sidebar-border: 200 15% 22%;
+    --sidebar-ring: 173 58% 45%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground font-sans antialiased;
+    font-family: 'Inter', system-ui, sans-serif;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: 'Nunito', system-ui, sans-serif;
+  }
+}
+
+@layer components {
+  .word-correct {
+    @apply px-1 py-0.5 rounded;
+    background-color: hsl(var(--word-correct) / 0.15);
+    color: hsl(var(--word-correct));
+    border-bottom: 2px solid hsl(var(--word-correct));
+  }
+
+  .word-substitution {
+    @apply px-1 py-0.5 rounded cursor-pointer;
+    background-color: hsl(var(--word-substitution) / 0.12);
+    color: hsl(var(--word-substitution));
+    border-bottom: 2px solid hsl(var(--word-substitution));
+  }
+
+  .word-mispronunciation {
+    @apply px-1 py-0.5 rounded cursor-pointer;
+    background-color: hsl(var(--word-mispronunciation) / 0.15);
+    color: hsl(152 30% 20%);
+    border-bottom: 2px solid hsl(var(--word-mispronunciation));
+  }
+
+  .word-omission {
+    @apply px-1 py-0.5 rounded cursor-pointer;
+    background-color: hsl(var(--word-omission) / 0.12);
+    color: hsl(var(--word-omission));
+    border-bottom: 2px solid hsl(var(--word-omission));
+    text-decoration: line-through;
+  }
+
+  .word-insertion {
+    @apply px-1 py-0.5 rounded cursor-pointer;
+    background-color: hsl(var(--word-insertion) / 0.12);
+    color: hsl(var(--word-insertion));
+    border-bottom: 2px solid hsl(var(--word-insertion));
+  }
+
+  .stat-card {
+    @apply rounded-xl p-5 transition-all duration-200;
+    background: hsl(var(--card));
+    box-shadow: var(--shadow-sm);
+  }
+
+  .stat-card:hover {
+    box-shadow: var(--shadow-md);
+    transform: translateY(-1px);
+  }
+}
+
+/* Stripe Pricing Table overrides */
+stripe-pricing-table {
+  --stripe-pricing-table-border-radius: 0.75rem;
+  border-radius: 0.75rem;
+  overflow: hidden;
+  display: block;
+  color-scheme: light;
+}
