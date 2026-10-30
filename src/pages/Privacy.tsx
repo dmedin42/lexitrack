@@ -42,7 +42,7 @@ const Privacy = () =>
           <h2 className="font-display font-bold text-xl text-foreground">2. Data Collection &amp; Usage</h2>
           <ul className="space-y-3 text-muted-foreground leading-relaxed list-none pl-0">
             <li>
-              <strong className="text-foreground">Teacher Data:</strong> We collect name, email, and school affiliation to manage your account and subscription.
+              <strong className="text-foreground">Teacher Data:</strong> We collect name, email, and school affiliation to manage your account.
             </li>
             <li>
               <strong className="text-foreground">Student Data — Zero PII:</strong> LexiTrack does <strong className="text-foreground">not</strong> collect any Student Personally Identifiable Information (PII). We do not collect student names, SSIDs, birthdates, email addresses, home addresses, or any other information that could directly identify a student. Students are identified only by app-assigned pseudonymous IDs (e.g., "ER1", "AJ1") chosen by the educator.
@@ -75,9 +75,6 @@ const Privacy = () =>
            <ul className="space-y-3 text-muted-foreground leading-relaxed list-none pl-0">
              <li>
                <strong className="text-foreground">Supabase</strong> — Database hosting, authentication, and file storage.
-             </li>
-             <li>
-               <strong className="text-foreground">Stripe</strong> — Payment processing and subscription billing.
              </li>
              <li>
                <strong className="text-foreground">Microsoft Azure</strong> — Speech-to-Text processing for reading fluency analysis.

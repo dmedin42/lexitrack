@@ -123,10 +123,9 @@ const Terms = () => {
             </p>
             <p>
               <strong>3.4</strong> Sub-processors with access to Student Data are limited to: (a) Supabase (database
-              and authentication), (b) Microsoft Azure (AI Speech Services), and (c) Stripe (educator billing only—no
-              student data exposure). A current sub-processor list is maintained at{" "}
+              and authentication) and (b) Microsoft Azure (AI Speech Services). A current sub-processor list is maintained at{" "}
               <Link to="/privacy" className="text-primary hover:underline font-medium">
-                lexitrackedu.com/privacy
+                the Privacy Policy page
               </Link>.
             </p>
           </div>

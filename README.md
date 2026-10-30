@@ -14,7 +14,7 @@ Oral reading fluency checks usually mean pulling students out one at a time and 
 - **Intervention clusters.** Groups students who struggle with similar sounds so teachers can plan small-group instruction.
 - **Parent reports.** Shareable, student-friendly progress reports for caregivers.
 - **Sandbox mode.** A guided demo with sample data that works without signing up.
-- **Subscriptions.** Stripe checkout, customer portal, and webhooks for the Pro plan.
+- **Fully open.** No paywalls or plan limits: every feature is available to every account.
 
 ## Tech stack
 
@@ -23,7 +23,6 @@ Oral reading fluency checks usually mean pulling students out one at a time and 
 | Frontend | React, TypeScript, Vite, Tailwind CSS, shadcn/ui, TanStack Query, Framer Motion |
 | Backend | Supabase (Postgres with row-level security, Auth, Edge Functions on Deno) |
 | AI / speech | Azure AI Speech: Pronunciation Assessment and speech-to-text |
-| Payments | Stripe (pricing table, checkout, billing portal, webhooks) |
 | Hosting | Vercel |
 | Testing | Vitest, Testing Library |
 
@@ -37,7 +36,7 @@ src/
   lib/                   Scoring helpers, clustering, config
   test/                  Unit tests
 supabase/
-  functions/             Edge Functions (assess-pronunciation, transcribe-retell, stripe-webhook, ...)
+  functions/             Edge Functions (assess-pronunciation, transcribe-retell, get-parent-report, ...)
   functions/_shared/     Azure client, scoring math, database helpers
   migrations/            Database schema
 SQL_MIGRATIONS.md        Full schema walkthrough
@@ -65,7 +64,6 @@ npm run dev             # http://localhost:8080
 | Secret | Used for |
 | --- | --- |
 | `AZURE_SPEECH_KEY`, `AZURE_SPEECH_REGION` | Pronunciation scoring and retell transcription |
-| `STRIPE_SECRET_KEY`, `STRIPE_WEBHOOK_SECRET`, `STRIPE_PRICE_ID` | Subscriptions |
 
 `SUPABASE_URL`, `SUPABASE_ANON_KEY`, and `SUPABASE_SERVICE_ROLE_KEY` are provided to Edge Functions automatically.
 

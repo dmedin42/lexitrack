@@ -3,7 +3,6 @@ import { Sparkles, AlertTriangle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
-import { Badge } from "@/components/ui/badge";
 import { toast } from "sonner";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
@@ -32,11 +31,7 @@ interface ParsedStudent {
 interface BulkAddStudentsProps {
   classId: string;
   classGrade: string;
-  existingCount: number;
   existingNames: string[];
-  isPro: boolean;
-  freeLimit: number;
-  onShowUpgrade: () => void;
   onClose: () => void;
   onStudentsAdded?: () => void;
 }
@@ -44,11 +39,7 @@ interface BulkAddStudentsProps {
 const BulkAddStudents = ({
   classId,
   classGrade,
-  existingCount,
   existingNames,
-  isPro,
-  freeLimit,
-  onShowUpgrade,
   onClose,
   onStudentsAdded,
 }: BulkAddStudentsProps) => {
@@ -66,11 +57,9 @@ const BulkAddStudents = ({
       .filter((line) => line.length > 0);
   }, [rawText]);
 
-  const remainingSlots = isPro ? Infinity : freeLimit - existingCount;
   const duplicateNames = parsedNames.filter(n => existingNamesLower.has(n.toLowerCase()));
   const uniqueNewNames = parsedNames.filter(n => !existingNamesLower.has(n.toLowerCase()));
-  const overLimit = !isPro && uniqueNewNames.length > remainingSlots;
-  const allowedCount = isPro ? uniqueNewNames.length : Math.min(uniqueNewNames.length, remainingSlots);
+  const allowedCount = uniqueNewNames.length;
 
   // Build preview list with avatars
   const previewStudents: ParsedStudent[] = useMemo(() => {
@@ -136,11 +125,6 @@ const BulkAddStudents = ({
           rows={5}
           className="mt-1.5 font-mono text-sm"
         />
-        {!isPro && (
-          <p className="text-xs text-muted-foreground mt-1">
-            {existingCount}/{freeLimit} students used · {Math.max(0, remainingSlots)} slots remaining
-          </p>
-        )}
       </div>
 
       {/* Duplicate names warning */}
@@ -158,29 +142,6 @@ const BulkAddStudents = ({
         </div>
       )}
 
-      {/* Over-limit warning */}
-      {overLimit && (
-        <div className="flex items-start gap-2 p-3 rounded-lg bg-destructive/10 border border-destructive/20">
-          <AlertTriangle className="w-4 h-4 text-destructive mt-0.5 shrink-0" />
-          <div className="text-sm">
-            <p className="font-medium text-destructive">
-              Free plan limit: {freeLimit} students total
-            </p>
-            <p className="text-muted-foreground text-xs mt-0.5">
-              You've entered {uniqueNewNames.length} new names but only {Math.max(0, remainingSlots)} slot
-              {remainingSlots !== 1 ? "s" : ""} remaining.
-            </p>
-            <Button
-              size="sm"
-              variant="default"
-              className="mt-2 gap-1.5"
-              onClick={onShowUpgrade}
-            >
-              Upgrade to Pro
-            </Button>
-          </div>
-        </div>
-      )}
 
       {/* Preview list */}
       {parsedNames.length > 0 && (
@@ -219,19 +180,6 @@ const BulkAddStudents = ({
                 </div>
               </div>
             ))}
-            {overLimit &&
-              studentsWithOverrides.slice(allowedCount).map((s, i) => (
-                <div
-                  key={`over-${s.name}-${i}`}
-                  className="flex items-center gap-2.5 p-2 rounded-lg bg-secondary/40 opacity-40 line-through"
-                >
-                  <span className="text-xl">{s.avatar}</span>
-                  <div className="min-w-0 flex-1">
-                    <p className="text-sm font-medium text-foreground truncate">{s.name}</p>
-                  </div>
-                  <Badge variant="outline" className="text-[10px] shrink-0">Pro</Badge>
-                </div>
-              ))}
           </div>
         </div>
       )}

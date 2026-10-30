@@ -13,7 +13,7 @@ const InviteCaregiverDialog = ({ studentId, studentName }: InviteCaregiverDialog
   const { user } = useAuth();
 
   const handleCopy = () => {
-    const url = `https://lexitrackedu.com/parent/${user?.id ?? ""}/${studentId}`;
+    const url = `${window.location.origin}/parent/${user?.id ?? ""}/${studentId}`;
     navigator.clipboard.writeText(url).then(() => {
       setCopied(true);
       setTimeout(() => setCopied(false), 2000);

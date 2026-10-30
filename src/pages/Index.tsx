@@ -1,72 +1,27 @@
-import { useState, useEffect, useRef } from "react";
-import { motion, AnimatePresence } from "framer-motion";
-import { Link2, Check, Loader2, PlusCircle, BookOpen, Shield, ArrowRight } from "lucide-react";
+import { useState } from "react";
+import { motion } from "framer-motion";
+import { Link2, Check, Loader2, PlusCircle, BookOpen } from "lucide-react";
 import { useNavigate } from "react-router-dom";
-import { toast } from "sonner";
 import { useClasses, useStudents } from "@/hooks/useStudents";
-import { usePlanView } from "@/hooks/usePlanView";
 import { useClassStats } from "@/hooks/useClassStats";
 import StatsOverview from "@/components/StatsOverview";
 import StudentCard from "@/components/StudentCard";
 import AppLayout from "@/components/AppLayout";
 import { Button } from "@/components/ui/button";
-import lexitrackLogo from "@/assets/lexitrack-logo.png";
 import { useAuth } from "@/hooks/useAuth";
 import { useOnboarding } from "@/hooks/useOnboarding";
 import OnboardingOverlay from "@/components/OnboardingOverlay";
-import { STRIPE_PUBLISHABLE_KEY as PUBLISHABLE_KEY, STRIPE_PRICING_TABLE_ID as PRICING_TABLE_ID } from "@/lib/stripe-config";
-
 
 const Dashboard = () => {
   const { data: classes, isLoading: classesLoading } = useClasses();
   const [selectedClassId, setSelectedClassId] = useState<string>("");
   const [copied, setCopied] = useState(false);
-  const [showPricing, setShowPricing] = useState(false);
   const { user } = useAuth();
-  const { hasSeenPlans, isLoading: planViewLoading, incrementPlanView } = usePlanView();
   const navigate = useNavigate();
-  const scriptLoaded = useRef(false);
-  const autoShownRef = useRef(false);
   const onboarding = useOnboarding();
 
-  // Auto-show pricing overlay on first-ever dashboard visit (has_seen_plans === 0)
-  useEffect(() => {
-    if (planViewLoading || autoShownRef.current) return;
-    if (hasSeenPlans === 0) {
-      setShowPricing(true);
-      autoShownRef.current = true;
-    }
-  }, [hasSeenPlans, planViewLoading]);
-
-  // Increment plan view counter whenever the overlay opens
-  useEffect(() => {
-    if (showPricing) {
-      incrementPlanView();
-    }
-  }, [showPricing, incrementPlanView]);
-
-  // Load Stripe pricing table script when needed
-  useEffect(() => {
-    if (!showPricing || scriptLoaded.current) return;
-    const existing = document.querySelector('script[src="https://js.stripe.com/v3/pricing-table.js"]');
-    if (existing) { scriptLoaded.current = true; return; }
-    const script = document.createElement("script");
-    script.src = "https://js.stripe.com/v3/pricing-table.js";
-    script.async = true;
-    document.head.appendChild(script);
-    scriptLoaded.current = true;
-  }, [showPricing]);
-
-  useEffect(() => {
-    const params = new URLSearchParams(window.location.search);
-    if (params.get('upgraded') === 'true') {
-      toast.success("🎉 Welcome to LexiTrack Pro! Your classroom is now unlimited.");
-      window.history.replaceState({}, document.title, window.location.pathname);
-    }
-  }, []);
-
   const copyStudentLink = () => {
-    const url = `https://lexitrackedu.com/student/${user?.id ?? ""}`;
+    const url = `${window.location.origin}/student/${user?.id ?? ""}`;
     navigator.clipboard.writeText(url).then(() => {
       setCopied(true);
       setTimeout(() => setCopied(false), 2000);
@@ -113,54 +68,6 @@ const Dashboard = () => {
           </Button>
         </motion.div>
 
-        {/* Pricing Overlay for new signups */}
-        <AnimatePresence>
-          {showPricing && (
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              className="fixed inset-0 z-[60] bg-background flex flex-col overflow-y-auto"
-            >
-              <header className="border-b border-border px-6 py-4 shrink-0">
-                <div className="max-w-6xl mx-auto flex items-center justify-between">
-                  <img src={lexitrackLogo} alt="LexiTrack" className="h-9 w-auto" />
-                </div>
-              </header>
-              <main className="flex-1 flex flex-col items-center justify-center px-6 py-12 overflow-y-auto">
-                <div className="text-center mb-8">
-                  <h1 className="font-display font-extrabold text-3xl sm:text-4xl text-foreground mb-3">
-                    Choose Your Plan
-                  </h1>
-                  <p className="text-muted-foreground text-lg max-w-xl mx-auto">
-                    Unlock unlimited students, passages, and advanced analytics — or start free and upgrade anytime.
-                  </p>
-                </div>
-                <div className="w-[95vw] max-w-5xl rounded-xl overflow-hidden [&>stripe-pricing-table]:block mb-8">
-                  {/* @ts-ignore – Stripe custom element */}
-                  <stripe-pricing-table
-                    pricing-table-id={PRICING_TABLE_ID}
-                    publishable-key={PUBLISHABLE_KEY}
-                    client-reference-id={user?.id || ""}
-                    customer-email={user?.email || ""}
-                  />
-                </div>
-                <div className="flex items-center justify-center gap-1.5 text-xs text-muted-foreground mb-6">
-                  <Shield className="h-3.5 w-3.5" />
-                  <span>Safe &amp; Secure via Stripe</span>
-                </div>
-                <Button
-                  variant="ghost"
-                  size="lg"
-                  className="gap-2 text-muted-foreground hover:text-foreground"
-                  onClick={() => setShowPricing(false)}
-                >
-                  Skip for now — Try Free Tier <ArrowRight className="w-4 h-4" />
-                </Button>
-              </main>
-            </motion.div>
-          )}
-        </AnimatePresence>
 
         <OnboardingOverlay
           active={onboarding.active}
@@ -235,54 +142,6 @@ const Dashboard = () => {
         </div>
       </motion.div>
 
-      {/* Pricing Overlay for new signups */}
-      <AnimatePresence>
-        {showPricing && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            className="fixed inset-0 z-[60] bg-background flex flex-col overflow-y-auto"
-          >
-            <header className="border-b border-border px-6 py-4 shrink-0">
-              <div className="max-w-6xl mx-auto flex items-center justify-between">
-                <img src={lexitrackLogo} alt="LexiTrack" className="h-9 w-auto" />
-              </div>
-            </header>
-            <main className="flex-1 flex flex-col items-center justify-center px-6 py-12 overflow-y-auto">
-              <div className="text-center mb-8">
-                <h1 className="font-display font-extrabold text-3xl sm:text-4xl text-foreground mb-3">
-                  Choose Your Plan
-                </h1>
-                <p className="text-muted-foreground text-lg max-w-xl mx-auto">
-                  Unlock unlimited students, passages, and advanced analytics — or start free and upgrade anytime.
-                </p>
-              </div>
-              <div className="w-[95vw] max-w-5xl rounded-xl overflow-hidden [&>stripe-pricing-table]:block mb-8">
-                {/* @ts-ignore – Stripe custom element */}
-                <stripe-pricing-table
-                  pricing-table-id={PRICING_TABLE_ID}
-                  publishable-key={PUBLISHABLE_KEY}
-                  client-reference-id={user?.id || ""}
-                  customer-email={user?.email || ""}
-                />
-              </div>
-              <div className="flex items-center justify-center gap-1.5 text-xs text-muted-foreground mb-6">
-                <Shield className="h-3.5 w-3.5" />
-                <span>Safe &amp; Secure via Stripe</span>
-              </div>
-              <Button
-                variant="ghost"
-                size="lg"
-                className="gap-2 text-muted-foreground hover:text-foreground"
-                onClick={() => setShowPricing(false)}
-              >
-                Skip for now — Try Free Tier <ArrowRight className="w-4 h-4" />
-              </Button>
-            </main>
-          </motion.div>
-        )}
-      </AnimatePresence>
 
       <OnboardingOverlay
         active={onboarding.active}

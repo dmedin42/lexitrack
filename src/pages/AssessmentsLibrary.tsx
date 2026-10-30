@@ -15,9 +15,7 @@ import { usePassages, useCreatePassage, useUpdatePassage, useDeletePassage, DbPa
 import { useClasses, useStudents } from "@/hooks/useStudents";
 import { useActiveAssignments, useAssignStudents, useCloseAllAssignments, useToggleAssignment, useRemoveAssignment } from "@/hooks/useActiveAssignments";
 import { useAuth } from "@/hooks/useAuth";
-import { useSubscription } from "@/hooks/useSubscription";
 import { useToast } from "@/hooks/use-toast";
-import UpgradeProModal from "@/components/UpgradeProModal";
 import { useOnboarding } from "@/hooks/useOnboarding";
 import OnboardingOverlay from "@/components/OnboardingOverlay";
 
@@ -30,13 +28,10 @@ const TIMER_EVENT = "lexitrack_timer_changed";
 
 const getBool = (key: string) => { try { const v = localStorage.getItem(key); return v !== null ? v === "true" : false; } catch { return false; } };
 
-const FREE_PASSAGE_LIMIT = 10;
 
 const AssessmentsLibrary = () => {
   const { user } = useAuth();
-  const { isPro } = useSubscription();
   const [copied, setCopied] = useState(false);
-  const [showUpgrade, setShowUpgrade] = useState(false);
   const onboarding = useOnboarding();
   const [activeTab, setActiveTab] = useState("assignments");
 
@@ -63,7 +58,7 @@ const AssessmentsLibrary = () => {
   };
 
   const copyStudentLink = () => {
-    const url = `https://lexitrackedu.com/student/${user?.id ?? ""}`;
+    const url = `${window.location.origin}/student/${user?.id ?? ""}`;
     navigator.clipboard.writeText(url).then(() => {
       setCopied(true);
       setTimeout(() => setCopied(false), 2000);
@@ -334,13 +329,7 @@ const AssessmentsLibrary = () => {
                   className="pl-10"
                 />
               </div>
-              <Button onClick={() => {
-                if (!isPro && (passages?.length ?? 0) >= FREE_PASSAGE_LIMIT) {
-                  setShowUpgrade(true);
-                } else {
-                  openCreate();
-                }
-              }} className="gap-2" data-onboarding="create-passage">
+              <Button onClick={openCreate} className="gap-2" data-onboarding="create-passage">
                 <Plus className="w-4 h-4" /> Add Passage
               </Button>
             </div>
@@ -576,7 +565,6 @@ const AssessmentsLibrary = () => {
             </div>
           </DialogContent>
         </Dialog>
-        <UpgradeProModal open={showUpgrade} onOpenChange={setShowUpgrade} trigger="passages" />
         <OnboardingOverlay
           active={onboarding.active}
           step={onboarding.step}

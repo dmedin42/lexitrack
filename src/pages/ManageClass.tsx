@@ -28,14 +28,12 @@ import {
   DropdownMenuTrigger } from
 "@/components/ui/dropdown-menu";
 import GradingStrictnessSlider from "@/components/GradingStrictnessSlider";
-import { Badge } from "@/components/ui/badge";
 import { Slider } from "@/components/ui/slider";
 import { Switch } from "@/components/ui/switch";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { useClasses, useStudents, DbClass } from "@/hooks/useStudents";
 import { useAuth } from "@/hooks/useAuth";
-import { useSubscription } from "@/hooks/useSubscription";
 import AppLayout from "@/components/AppLayout";
 import { useOnboarding } from "@/hooks/useOnboarding";
 import OnboardingOverlay from "@/components/OnboardingOverlay";
@@ -44,8 +42,6 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useToast } from "@/hooks/use-toast";
-import UpgradeProModal from "@/components/UpgradeProModal";
-import SubscriptionSection from "@/components/SubscriptionSection";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -64,28 +60,15 @@ interface StudentEditState {
   student_password: string;
 }
 
-const FREE_STUDENT_LIMIT = 3;
 
 const ManageClass = () => {
   const { user } = useAuth();
-  const { isPro, subscriptionStatus } = useSubscription();
   const { data: classes, isLoading: classesLoading } = useClasses();
   const [selectedClassId, setSelectedClassId] = useState<string | null>(null);
   const { data: students } = useStudents(selectedClassId ?? undefined);
   const { toast } = useToast();
   const queryClient = useQueryClient();
-  const [showUpgrade, setShowUpgrade] = useState(false);
   const onboarding = useOnboarding();
-
-  // Handle post-checkout redirect
-  useEffect(() => {
-    const params = new URLSearchParams(window.location.search);
-    if (params.get("upgraded") === "true") {
-      queryClient.invalidateQueries({ queryKey: ["subscription-status"] });
-      toast({ title: "🎉 Welcome to Pro!", description: "You now have unlimited access." });
-      window.history.replaceState({}, "", window.location.pathname);
-    }
-  }, []);
 
   // New class form — auto-show during onboarding if no classes exist
   const [showNewClass, setShowNewClass] = useState(false);
@@ -167,7 +150,7 @@ const ManageClass = () => {
     }, 400);
   }, []);
 
-  // Comprehension toggle (Pro only)
+  // Comprehension toggle
   const [enableRetell, setEnableRetell] = useState(false);
   const [showRetellTranscript, setShowRetellTranscript] = useState(false);
 
@@ -378,12 +361,6 @@ const ManageClass = () => {
           </DropdownMenu>
         </div>
 
-        {!isPro && (
-          <SubscriptionSection
-            isPro={isPro}
-            subscriptionStatus={subscriptionStatus ?? "free"}
-            onUpgrade={() => setShowUpgrade(true)} />
-        )}
 
 
         {/* New class form */}
@@ -547,17 +524,12 @@ const ManageClass = () => {
               />
             </div>
 
-            {/* Comprehension / Retell Toggle (Pro only) */}
+            {/* Comprehension / Retell Toggle */}
             <div className="flex items-center justify-between border-t border-border pt-4">
               <div>
                 <div className="flex items-center gap-2">
                   <BookOpen className="w-4 h-4 text-muted-foreground" />
                   <span className="text-sm font-medium text-foreground">Comprehension Scoring (Retell)</span>
-                  {!isPro &&
-                <Badge variant="outline" className="text-[10px] py-0 px-1.5">
-                      Pro
-                    </Badge>
-                }
                 </div>
                 <p className="text-xs text-muted-foreground mt-0.5">
                   After reading, students retell the story in their own words for comprehension scoring.
@@ -567,10 +539,6 @@ const ManageClass = () => {
               id="pref-retell"
               checked={enableRetell}
               onCheckedChange={async (checked) => {
-                if (!isPro) {
-                  setShowUpgrade(true);
-                  return;
-                }
                 setEnableRetell(checked);
                 if (!selectedClassId) return;
                 await (supabase as any).from("classes").update({ enable_retell: checked }).eq("id", selectedClassId);
@@ -579,7 +547,7 @@ const ManageClass = () => {
             </div>
 
             {/* Show Retell Transcript to Students — only when retell is enabled */}
-            {enableRetell && isPro && (
+            {enableRetell && (
               <div className="flex items-center justify-between border-t border-border pt-4">
                 <div>
                   <span className="text-sm font-medium text-foreground">Show Retell Transcript to Students</span>
@@ -600,7 +568,7 @@ const ManageClass = () => {
             )}
 
             {/* Comprehension Scoring Weights — only when retell is enabled */}
-            {enableRetell && isPro &&
+            {enableRetell &&
           <div className="border-t border-border pt-4">
                 <div className="flex items-center gap-2 mb-1">
                   <BookOpen className="w-4 h-4 text-muted-foreground" />
@@ -747,11 +715,7 @@ const ManageClass = () => {
               <BulkAddStudents
                 classId={selectedClassId!}
                 classGrade={selectedClass?.grade ?? ""}
-                existingCount={students?.length ?? 0}
                 existingNames={(students ?? []).map((s: any) => s.name)}
-                isPro={isPro}
-                freeLimit={FREE_STUDENT_LIMIT}
-                onShowUpgrade={() => setShowUpgrade(true)}
                 onClose={() => setShowBulkAdd(false)}
                 onStudentsAdded={() => {
                   if (onboarding.active && onboarding.step === 1) {
@@ -1043,13 +1007,6 @@ const ManageClass = () => {
           </Collapsible>
         }
 
-        {!isPro &&
-        <p className="text-xs text-muted-foreground text-center mt-8">
-            Free plan: {students?.length ?? 0}/{FREE_STUDENT_LIMIT} students used
-          </p>
-        }
-
-        <UpgradeProModal open={showUpgrade} onOpenChange={setShowUpgrade} trigger="students" />
       </motion.div>
 
       <OnboardingOverlay

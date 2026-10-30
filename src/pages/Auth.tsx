@@ -183,7 +183,7 @@ const Auth = () => {
         password,
         options: {
           data: { full_name: fullName, role },
-          emailRedirectTo: "https://lexitrackedu.com/pricing",
+          emailRedirectTo: window.location.origin + "/",
         },
       });
       if (error) throw error;
@@ -562,7 +562,7 @@ const Auth = () => {
                     I confirm I am an educator and have the authority to provide consent for student data collection on
                     behalf of my school/district under the COPPA School Consent model. I agree to the{" "}
                     <a
-                      href="https://lexitrackedu.com/privacy"
+                      href="/privacy"
                       target="_blank"
                       rel="noopener noreferrer"
                       className="text-primary hover:underline font-medium"
