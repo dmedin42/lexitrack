@@ -5,19 +5,19 @@ describe("WPM Sanity Check Guardrail", () => {
   it("flags WPM > 300 as high_interference", () => {
     const r = runSanityCheck(350, 90);
     expect(r.flag).toBe("high_interference");
-    expect(r.wpm).toBe(0);
+    expect(r.reason).not.toBeNull();
   });
 
   it("flags WPM > 150 as high_interference", () => {
     const r = runSanityCheck(180, 85);
     expect(r.flag).toBe("high_interference");
-    expect(r.wpm).toBe(0);
+    expect(r.reason).not.toBeNull();
   });
 
   it("flags WPM > 40 with accuracy < 20% as high_interference", () => {
     const r = runSanityCheck(65, 15);
     expect(r.flag).toBe("high_interference");
-    expect(r.wpm).toBe(0);
+    expect(r.reason).not.toBeNull();
   });
 
   it("passes normal 1st grade reading (90 WPM, 80%)", () => {
@@ -42,10 +42,11 @@ describe("WPM Sanity Check Guardrail", () => {
     expect(r.flag).toBe("high_interference");
   });
 
-  it("preserves raw scores when flagged", () => {
+  it("preserves scores when flagged (the flag marks interference; values are kept)", () => {
     const r = runSanityCheck(200, 50);
     expect(r.rawWpm).toBe(200);
     expect(r.rawAccuracy).toBe(50);
-    expect(r.wpm).toBe(0);
+    expect(r.wpm).toBe(200);
+    expect(r.accuracy).toBe(50);
   });
 });
