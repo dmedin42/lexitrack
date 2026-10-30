@@ -22,12 +22,7 @@ jobs:
           node-version: 22
       - name: Upgrade
         run: |
-          {
-            npm uninstall zod @hookform/resolvers @tailwindcss/typography --no-audit --no-fund &&
-            npm uninstall @vitejs/plugin-react-swc --no-audit --no-fund &&
-            npm install -D vite@^8 vitest@^5 @vitejs/plugin-react@latest --no-audit --no-fund &&
-            npm install react-router-dom@^7 --no-audit --no-fund
-          } 2>&1 | tee /tmp/upgrade.log; exit ${PIPESTATUS[0]}
+          { rm -f package-lock.json && npm install --no-audit --no-fund; } 2>&1 | tee /tmp/upgrade.log; exit ${PIPESTATUS[0]}
       - name: Test
         run: npm test 2>&1 | tee /tmp/test.log; exit ${PIPESTATUS[0]}
       - name: Build
