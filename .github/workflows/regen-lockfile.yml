@@ -1,0 +1,26 @@
+# One-time helper: regenerates package-lock.json from package.json and commits it.
+name: Regenerate lockfile
+
+on:
+  push:
+    paths: [".github/workflows/regen-lockfile.yml"]
+
+permissions:
+  contents: write
+
+jobs:
+  regen:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - run: rm -f package-lock.json && npm install --package-lock-only --no-audit --no-fund
+      - name: Commit
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add package-lock.json
+          git commit -m "Regenerate package-lock.json" || echo "no changes"
+          git push
