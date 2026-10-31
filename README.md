@@ -4,7 +4,7 @@
 
 Oral reading fluency checks usually mean pulling students out one at a time and scoring every word by hand. LexiTrack lets a student read a passage aloud on any device. Azure's pronunciation assessment then scores each word and phoneme, and the teacher gets accuracy, words per minute, and growth over time without hand-scoring.
 
-**Live demo:** https://lexitrack-app.vercel.app (try **Sandbox Mode**, no account needed)
+**Live demo:** https://lexitrackedu.com (try **Sandbox Mode**, no account needed)
 
 ## Features
 
