@@ -19,7 +19,7 @@ interface ClassOption {
 interface StudentOption {
   id: string;
   username: string;
-  student_password: string;
+  student_password: string | null; // no longer sent by the server; checked with verify_student_password
   name: string;
   avatar: string;
 }
@@ -86,7 +86,17 @@ const StudentLogin = () => {
       setLoggingIn(false);
       return;
     }
-    if (student.student_password !== password) {
+    // The database checks the password, so it never has to be sent to the browser.
+    const { data: ok, error: checkError } = await (supabase as any).rpc("verify_student_password", {
+      student_id_input: student.id,
+      password_input: password,
+    });
+    if (checkError) {
+      setError("Something went wrong. Please try again.");
+      setLoggingIn(false);
+      return;
+    }
+    if (ok !== true) {
       setError("Wrong password. Ask your teacher for help! 🙋");
       setLoggingIn(false);
       return;

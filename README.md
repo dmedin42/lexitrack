@@ -13,7 +13,7 @@ Oral reading fluency checks usually mean pulling students out one at a time and 
 - **Teacher dashboard.** Class overview, per-student history and progress charts, benchmark tracking, and error-pattern insights.
 - **Intervention clusters.** Groups students who struggle with similar sounds so teachers can plan small-group instruction.
 - **Parent reports.** Shareable, student-friendly progress reports for caregivers.
-- **Sandbox mode.** A guided demo with sample data that works without signing up.
+- **Sandbox mode.** One click signs you in as a guest teacher with your own sample class (8 students, ten weeks of reading history, intervention groups, an open assignment). Every feature works on real data, including recording new assessments, and the guest account is deleted after 24 hours.
 - **Fully open.** No paywalls or plan limits: every feature is available to every account.
 
 ## Tech stack
@@ -66,6 +66,10 @@ npm run dev             # http://localhost:8080
 | `AZURE_SPEECH_KEY`, `AZURE_SPEECH_REGION` | Pronunciation scoring and retell transcription |
 
 `SUPABASE_URL`, `SUPABASE_ANON_KEY`, and `SUPABASE_SERVICE_ROLE_KEY` are provided to Edge Functions automatically.
+
+### Sandbox Mode
+
+Sandbox Mode uses Supabase anonymous sign-ins, so turn on **Allow anonymous sign-ins** under **Authentication → Sign In / Providers**. When an anonymous user signs up, the `handle_new_user` trigger makes them a guest teacher and `seed_lexitrack_guest` builds their sample class (`supabase/migrations/20261105060000_guest_sandbox.sql`). An hourly `pg_cron` job, `cleanup_guest_users`, deletes guest accounts older than 24 hours along with their data.
 
 ## Scripts
 
