@@ -24,7 +24,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useToast } from "@/hooks/use-toast";
 import { useAuth } from "@/hooks/useAuth";
-import { useDemo } from "@/hooks/useDemo";
+import { startGuestSandbox } from "@/lib/guestSandbox";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import TryItYourselfSandbox from "@/components/TryItYourselfSandbox";
@@ -150,17 +150,18 @@ const Auth = () => {
   const { toast } = useToast();
   const navigate = useNavigate();
   const { user, loading: authLoading } = useAuth();
-  const { enableDemo } = useDemo();
   const authRef = useRef<HTMLDivElement>(null);
+  const [startingSandbox, setStartingSandbox] = useState(false);
 
-  const handleDemoMode = () => {
-    enableDemo();
-    navigate("/", { replace: true });
-  };
-
-  const handleSandbox = () => {
-    localStorage.removeItem("lexi_tour_complete");
-    navigate("/sandbox");
+  // Sandbox Mode: a real guest teacher account with a sample class. Once the
+  // session exists, the effect below sends the visitor to the dashboard.
+  const handleSandbox = async () => {
+    setStartingSandbox(true);
+    const { error } = await startGuestSandbox();
+    if (error) {
+      setStartingSandbox(false);
+      toast({ title: "Couldn't open the sandbox", description: error, variant: "destructive" });
+    }
   };
 
   const scrollToAuth = () => {
@@ -226,7 +227,7 @@ const Auth = () => {
             <img src={lexitrackLogo} alt="LexiTrack" className="h-9 w-auto" />
           </div>
           <div className="flex items-center gap-3">
-            <Button variant="ghost" size="sm" onClick={handleSandbox} className="gap-1.5">
+            <Button variant="ghost" size="sm" onClick={handleSandbox} disabled={startingSandbox} className="gap-1.5">
               <Play className="w-3.5 h-3.5" /> Sandbox
             </Button>
             <Button size="sm" onClick={() => { setMode("login"); scrollToAuth(); }}>
@@ -272,10 +273,13 @@ const Auth = () => {
               <Button size="lg" onClick={scrollToAuth} className="gap-2 text-base px-8 py-6">
                 Sign up <ArrowRight className="w-4 h-4" />
               </Button>
-              <Button size="lg" variant="outline" onClick={handleSandbox} className="gap-2 text-base px-8 py-6">
-                <Play className="w-4 h-4" /> Try Sandbox Mode
+              <Button size="lg" variant="outline" onClick={handleSandbox} disabled={startingSandbox} className="gap-2 text-base px-8 py-6">
+                <Play className="w-4 h-4" /> {startingSandbox ? "Opening your sandbox…" : "Try Sandbox Mode"}
               </Button>
             </motion.div>
+            <motion.p variants={fadeUp} custom={3} className="mt-4 text-sm text-muted-foreground">
+              Sandbox Mode opens a sample 3rd-grade class with real data. No account needed; it resets after 24 hours.
+            </motion.p>
           </motion.div>
 
           <motion.div variants={fadeUp} custom={4} initial="hidden" animate="visible" className="mt-12">
@@ -487,8 +491,8 @@ const Auth = () => {
 
                 <GoogleSignInButton />
 
-                <Button variant="outline" className="w-full gap-2 mt-2" onClick={handleSandbox}>
-                  <Play className="w-4 h-4" /> Try Sandbox Mode
+                <Button variant="outline" className="w-full gap-2 mt-2" onClick={handleSandbox} disabled={startingSandbox}>
+                  <Play className="w-4 h-4" /> {startingSandbox ? "Opening your sandbox…" : "Try Sandbox Mode"}
                 </Button>
 
                 <p className="text-sm text-center text-muted-foreground mt-4">
