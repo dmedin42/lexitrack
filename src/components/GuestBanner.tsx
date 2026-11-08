@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { FlaskConical, Loader2 } from "lucide-react";
-import { supabase } from "@/integrations/supabase/client";
+import { supabase } from "@/lib/supabase/client";
 import { Button } from "@/components/ui/button";
 
 /** Shown on every teacher page while someone is exploring Sandbox Mode. */

@@ -1,4 +1,4 @@
-import { supabase } from "@/integrations/supabase/client";
+import { supabase } from "@/lib/supabase/client";
 
 /**
  * Starts the guest sandbox: an anonymous Supabase session. The database signup

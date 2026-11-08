@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import { supabase } from "@/integrations/supabase/client";
+import { supabase } from "@/lib/supabase/client";
 import { isDemoId, getDemoWordAssessments, getDemoPhonemes } from "@/data/demoData";
 
 export interface DbWordAssessment {

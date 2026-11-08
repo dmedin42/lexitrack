@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback } from "react";
 import { Session, User } from "@supabase/supabase-js";
-import { supabase } from "@/integrations/supabase/client";
+import { supabase } from "@/lib/supabase/client";
 import { useDemo } from "@/hooks/useDemo";
 
 export type AppRole = "teacher" | "caregiver";

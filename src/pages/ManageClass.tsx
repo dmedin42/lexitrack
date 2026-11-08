@@ -31,7 +31,7 @@ import GradingStrictnessSlider from "@/components/GradingStrictnessSlider";
 import { Slider } from "@/components/ui/slider";
 import { Switch } from "@/components/ui/switch";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { supabase } from "@/integrations/supabase/client";
+import { supabase } from "@/lib/supabase/client";
 import { useClasses, useStudents, DbClass } from "@/hooks/useStudents";
 import { useAuth } from "@/hooks/useAuth";
 import AppLayout from "@/components/AppLayout";
@@ -53,6 +53,7 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger } from
 "@/components/ui/alert-dialog";
+import { DEFAULT_GRADING_STRICTNESS } from "@/lib/grading";
 
 interface StudentEditState {
   name: string;
@@ -141,7 +142,7 @@ const ManageClass = () => {
   }, []);
 
   // Grading strictness (1.0-10.0 scale, maps to Azure's 1-100)
-  const [gradingStrictness, setGradingStrictness] = useState(8.5);
+  const [gradingStrictness, setGradingStrictness] = useState(DEFAULT_GRADING_STRICTNESS);
   const strictnessTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const saveStrictnessDebounced = useCallback((val: number, classId: string) => {
     if (strictnessTimerRef.current) clearTimeout(strictnessTimerRef.current);
@@ -174,7 +175,7 @@ const ManageClass = () => {
       if (data) {
         setRecordingSeconds(data.default_time_limit ?? 60);
         setShowTimerToStudent(data.show_timer_to_student ?? false);
-        setGradingStrictness(data.grading_strictness ?? 8.5);
+        setGradingStrictness(data.grading_strictness ?? DEFAULT_GRADING_STRICTNESS);
         setCompWeightWordCount(data.comp_weight_word_count ?? 33);
         setCompWeightAlignment(data.comp_weight_alignment ?? 33);
         setCompWeightDetail(data.comp_weight_detail ?? 34);
@@ -661,7 +662,7 @@ const ManageClass = () => {
                   const defaults = {
                     default_time_limit: 60,
                     show_timer_to_student: false,
-                    grading_strictness: 8.5,
+                    grading_strictness: DEFAULT_GRADING_STRICTNESS,
                     enable_retell: false,
                     show_retell_transcript: false,
                     word_map_enabled: false,
@@ -676,7 +677,7 @@ const ManageClass = () => {
                   await (supabase as any).from("classes").update(defaults).eq("id", selectedClassId);
                   setRecordingSeconds(60);
                   setShowTimerToStudent(false);
-                  setGradingStrictness(8.5);
+                  setGradingStrictness(DEFAULT_GRADING_STRICTNESS);
                   setEnableRetell(false);
                   setShowRetellTranscript(false);
                   setWordMapGlobal(false);

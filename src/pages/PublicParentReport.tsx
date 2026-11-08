@@ -3,7 +3,7 @@ import { Star, BookOpen, Heart } from "lucide-react";
 import { useQuery } from "@tanstack/react-query";
 import { useParams } from "react-router-dom";
 
-import { SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY as SUPABASE_ANON_KEY } from "@/integrations/supabase/client";
+import { SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY as SUPABASE_ANON_KEY } from "@/lib/supabase/client";
 
 const PublicParentReport = () => {
   const { studentId } = useParams<{ studentId: string }>();

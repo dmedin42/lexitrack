@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Mic, Square, Upload, FileJson, Loader2, BookOpen } from "lucide-react";
 import { useAudioRecorder, blobToBase64 } from "@/hooks/useAudioRecorder";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { supabase } from "@/integrations/supabase/client";
+import { supabase } from "@/lib/supabase/client";
 import { usePassages } from "@/hooks/usePassages";
 import { runClusterAnalysis } from "@/lib/clusterAnalysis";
 import { Button } from "@/components/ui/button";

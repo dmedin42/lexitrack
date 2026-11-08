@@ -4,7 +4,7 @@ import { motion } from "framer-motion";
 import { ArrowLeft, Calendar, Activity, Target, Gauge, Brain, BookOpen, Save, Timer, ChevronDown, ChevronRight, Settings, Edit2, Check, X, AlertTriangle, ShieldCheck, Trash2 } from "lucide-react";
 import { runSanityCheck, type SanityResult } from "@/lib/sanityCheck";
 import { useStudentWithAssessments } from "@/hooks/useStudents";
-import { supabase } from "@/integrations/supabase/client";
+import { supabase } from "@/lib/supabase/client";
 import { useQueryClient } from "@tanstack/react-query";
 import WordMap from "@/components/WordMap";
 import ProgressChart from "@/components/ProgressChart";

@@ -11,13 +11,6 @@ const chunkGroups: Record<string, string[]> = {
 
 // https://vite.dev/config/
 export default defineConfig({
-  server: {
-    host: "::",
-    port: 8080,
-    hmr: {
-      overlay: false,
-    },
-  },
   plugins: [react()],
   resolve: {
     alias: {

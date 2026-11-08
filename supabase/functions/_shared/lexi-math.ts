@@ -55,7 +55,7 @@ export function prepareReferenceText(raw: string, maxWords = 350): string {
 
 /** Convert grading strictness (1-10 scale) to Azure threshold (1-100). */
 export function toAzureThreshold(strictness?: number): number {
-  return strictness ? Math.round(strictness * 10) : 75;
+  return strictness ? Math.round(strictness * 10) : 88;
 }
 
 /**
