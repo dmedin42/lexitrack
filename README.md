@@ -32,7 +32,7 @@ Oral reading fluency checks usually mean pulling students out one at a time and 
 src/
   pages/                 Routes (dashboard, student portal, sandbox, reports, ...)
   components/            Feature components and shadcn/ui primitives (ui/)
-  integrations/supabase  Supabase client and generated database types
+  lib/supabase  Supabase client and generated database types
   lib/                   Scoring helpers, clustering, config
   test/                  Unit tests
 supabase/
@@ -52,7 +52,7 @@ git clone https://github.com/dmedin42/lexitrack.git
 cd lexitrack
 npm install
 cp .env.example .env    # then fill in your Supabase URL and anon key
-npm run dev             # http://localhost:8080
+npm run dev             # http://localhost:5173
 ```
 
 ### Backend setup

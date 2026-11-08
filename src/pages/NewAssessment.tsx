@@ -2,7 +2,7 @@ import { useState, useRef, useCallback } from "react";
 import { motion } from "framer-motion";
 import { Upload, FileJson, Mic, Square, Loader2 } from "lucide-react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { supabase } from "@/integrations/supabase/client";
+import { supabase } from "@/lib/supabase/client";
 import { useClasses, useStudents } from "@/hooks/useStudents";
 import AppLayout from "@/components/AppLayout";
 import { Button } from "@/components/ui/button";

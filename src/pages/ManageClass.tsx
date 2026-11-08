@@ -31,7 +31,7 @@ import GradingStrictnessSlider from "@/components/GradingStrictnessSlider";
 import { Slider } from "@/components/ui/slider";
 import { Switch } from "@/components/ui/switch";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { supabase } from "@/integrations/supabase/client";
+import { supabase } from "@/lib/supabase/client";
 import { useClasses, useStudents, DbClass } from "@/hooks/useStudents";
 import { useAuth } from "@/hooks/useAuth";
 import AppLayout from "@/components/AppLayout";

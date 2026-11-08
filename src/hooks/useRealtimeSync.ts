@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { useQueryClient } from "@tanstack/react-query";
-import { supabase } from "@/integrations/supabase/client";
+import { supabase } from "@/lib/supabase/client";
 import { toast } from "@/hooks/use-toast";
 
 const BC_CHANNEL_NAME = "lexitrack-assessment-sync";

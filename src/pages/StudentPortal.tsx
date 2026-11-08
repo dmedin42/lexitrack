@@ -13,7 +13,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import lexitrackLogo from "@/assets/lexitrack-logo.png";
 import { motion, AnimatePresence } from "framer-motion";
 import { Mic, Square, Loader2, LogOut, BookOpen, Timer, Send, RotateCcw, MessageCircle, Star } from "lucide-react";
-import { supabase } from "@/integrations/supabase/client";
+import { supabase } from "@/lib/supabase/client";
 import { Button } from "@/components/ui/button";
 import { getStudentSession, clearStudentSession } from "@/hooks/useStudentSession";
 import { useAudioRecorder, blobToBase64 } from "@/hooks/useAudioRecorder";

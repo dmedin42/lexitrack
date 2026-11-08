@@ -12,7 +12,7 @@ vi.mock("@/hooks/useAuth", () => ({
 vi.mock("@/hooks/useDemo", () => ({
   useDemo: () => ({ isDemo: false, enableDemo: vi.fn(), disableDemo: vi.fn() }),
 }));
-vi.mock("@/integrations/supabase/client", () => ({
+vi.mock("@/lib/supabase/client", () => ({
   supabase: { auth: { signOut: vi.fn(), signInAnonymously: vi.fn() } },
 }));
 
