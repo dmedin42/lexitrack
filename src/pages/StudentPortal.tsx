@@ -24,6 +24,7 @@ import { runSanityCheck } from "@/lib/sanityCheck";
 import WordMap from "@/components/WordMap";
 import VoiceMeter from "@/components/VoiceMeter";
 import LexiController from "@/components/LexiController";
+import { DEFAULT_GRADING_STRICTNESS } from "@/lib/grading";
 
 const DEFAULT_RECORDING_SECONDS = 60;
 const RETELL_RECORDING_LIMIT = 60;
@@ -88,7 +89,7 @@ const StudentPortal = () => {
   const [classWordMap, setClassWordMap] = useState(false);
   const [classDeepDive, setClassDeepDive] = useState(false);
   const [showRetellTranscript, setShowRetellTranscript] = useState(false);
-  const [gradingStrictness, setGradingStrictness] = useState(8.5);
+  const [gradingStrictness, setGradingStrictness] = useState(DEFAULT_GRADING_STRICTNESS);
   const [showWpmToStudent, setShowWpmToStudent] = useState(false);
   const [showAccuracyToStudent, setShowAccuracyToStudent] = useState(false);
   const [maxRecordingAttempts, setMaxRecordingAttempts] = useState(1);
@@ -124,7 +125,7 @@ const StudentPortal = () => {
         setEnableRetell(data.enable_retell ?? false);
         setClassWordMap(data.word_map_enabled ?? false);
         setClassDeepDive(data.deep_dive_enabled ?? false);
-        setGradingStrictness(data.grading_strictness ?? 8.5);
+        setGradingStrictness(data.grading_strictness ?? DEFAULT_GRADING_STRICTNESS);
         setShowWpmToStudent(data.show_wpm_to_student ?? false);
         setShowAccuracyToStudent(data.show_accuracy_to_student ?? false);
         setMaxRecordingAttempts(data.allow_second_attempt ? 2 : 1);

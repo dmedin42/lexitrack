@@ -30,7 +30,8 @@ serve(async (req) => {
 
     const textArray = referenceText.trim().split(/\s+/);
     const slicedText = sanitize(textArray.slice(0, 350).join(" "));
-    const currentThreshold = gradingStrictness ? Math.round(gradingStrictness * 10) : 90;
+    // Classes default to a grading strictness of 8.8 (threshold 88) when none is sent.
+    const currentThreshold = gradingStrictness ? Math.round(gradingStrictness * 10) : 88;
 
     const speechKey = Deno.env.get("AZURE_SPEECH_KEY");
     const speechRegion = Deno.env.get("AZURE_SPEECH_REGION") || "eastus";

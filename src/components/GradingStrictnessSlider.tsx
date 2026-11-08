@@ -2,6 +2,7 @@ import { useCallback, useMemo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { DEFAULT_GRADING_STRICTNESS } from "@/lib/grading";
 
 interface GradingStrictnessSliderProps {
   value: number;
@@ -44,7 +45,7 @@ const GradingStrictnessSlider = ({ value, onChange, className = "" }: GradingStr
 
   const handleNumberInput = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
-      const v = Math.max(1, Math.min(10, parseFloat(e.target.value) || 8.5));
+      const v = Math.max(1, Math.min(10, parseFloat(e.target.value) || DEFAULT_GRADING_STRICTNESS));
       onChange(Math.round(v * 10) / 10);
     },
     [onChange]
