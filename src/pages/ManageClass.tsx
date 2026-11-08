@@ -240,8 +240,7 @@ const ManageClass = () => {
         teacher_id: user!.id,
         name: className,
         grade: classGrade,
-        benchmark_wpm: parseInt(classBenchmark),
-        grading_strictness: DEFAULT_GRADING_STRICTNESS,
+        benchmark_wpm: parseInt(classBenchmark)
       }).select("id").single();
       if (error) throw error;
       return data;
