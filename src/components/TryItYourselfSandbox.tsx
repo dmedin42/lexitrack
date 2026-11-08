@@ -7,6 +7,7 @@ import { Card, CardContent } from "@/components/ui/card";
 
 import { useAudioRecorder, blobToBase64 } from "@/hooks/useAudioRecorder";
 import WordMap from "@/components/WordMap";
+import { DEFAULT_GRADING_STRICTNESS } from "@/lib/grading";
 
 const SANDBOX_PASSAGE =
   "The long trail goes high into the big mountains. Every step on the dusty path shows a new view of the green valley below. A cold wind blows through the trees. It makes a soft whistling sound. Small gray squirrels run across the trail to hide in the grass. High above, a large eagle flies in the blue sky. The air is cold and fresh at the top. You can see for miles in every way. It is a long walk to the reach the peak. But the beautiful view is worth all of the hard work.";
@@ -88,6 +89,7 @@ const TryItYourselfSandbox = () => {
           passageTitle: "Try It Yourself",
           skipSave: true,
           sessionDurationMs,
+          gradingStrictness: DEFAULT_GRADING_STRICTNESS,
         },
       });
       if (fnErr) throw new Error(fnErr.message || "Assessment failed");
